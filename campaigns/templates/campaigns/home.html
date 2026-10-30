@@ -5,7 +5,8 @@
     <h1 class="display-5 fw-bold">Campaign Hub</h1>
     <p class="lead">Run your D&amp;D campaigns in one place: session recaps, NPCs and secrets only the DM can see.</p>
     {% if user.is_authenticated %}
-        <p class="mb-0">Welcome back, {{ user.username }}.</p>
+        <p>Welcome back, {{ user.username }}.</p>
+        <a href="{% url 'campaign_list' %}" class="btn btn-primary btn-lg">My Campaigns</a>
     {% else %}
         <a href="{% url 'register' %}" class="btn btn-primary btn-lg me-2">Get Started</a>
         <a href="{% url 'login' %}" class="btn btn-outline-secondary btn-lg">Login</a>

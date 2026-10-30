@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}{% if campaign %}Edit {{ campaign.name }}{% else %}New Campaign{% endif %} | Campaign Hub{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h1 class="h3 mb-4">{% if campaign %}Edit {{ campaign.name }}{% else %}New Campaign{% endif %}</h1>
+                <form method="post">
+                    {% csrf_token %}
+                    {% include "partials/form_fields.html" %}
+                    <button type="submit" class="btn btn-primary">{% if campaign %}Save Changes{% else %}Create Campaign{% endif %}</button>
+                    <a href="{% if campaign %}{% url 'campaign_detail' campaign.pk %}{% else %}{% url 'campaign_list' %}{% endif %}"
+                       class="btn btn-outline-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

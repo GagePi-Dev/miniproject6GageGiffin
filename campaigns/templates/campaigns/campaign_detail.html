@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}{{ campaign.name }} | Campaign Hub{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'campaign_list' %}">My Campaigns</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ campaign.name }}</li>
+    </ol>
+</nav>
+
+<div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-3">
+    <div>
+        <h1 class="h2 mb-1">{{ campaign.name }}</h1>
+        {% if campaign.setting %}
+            <p class="lead text-body-secondary mb-0">{{ campaign.setting }}</p>
+        {% endif %}
+    </div>
+    {% if is_dm %}
+        <div>
+            <a href="{% url 'campaign_edit' campaign.pk %}" class="btn btn-outline-primary">Edit</a>
+            <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                Delete
+            </button>
+        </div>
+    {% endif %}
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h2 class="h5">About this Campaign</h2>
+                {% if campaign.description %}
+                    {{ campaign.description|linebreaks }}
+                {% else %}
+                    <p class="text-body-secondary mb-0">No description yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h2 class="h5">Party</h2>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item px-0 d-flex justify-content-between">
+                        {{ campaign.dm.username }} <span class="badge text-bg-warning">DM</span>
+                    </li>
+                    {% for player in players %}
+                        <li class="list-group-item px-0">{{ player.username }}</li>
+                    {% empty %}
+                        <li class="list-group-item px-0 text-body-secondary">No players yet.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        {% if is_dm %}
+            <div class="card shadow-sm border-warning">
+                <div class="card-body">
+                    <h2 class="h5">Invite Code</h2>
+                    <p class="font-monospace fs-5 user-select-all mb-1">{{ campaign.invite_code }}</p>
+                    <p class="small text-body-secondary mb-0">Share this with your players so they can join. Only you can see it.</p>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{% if is_dm %}
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" action="{% url 'campaign_delete' campaign.pk %}">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h2 class="modal-title h5" id="deleteModalLabel">Delete Campaign?</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    This permanently deletes <strong>{{ campaign.name }}</strong> along with all of its sessions and NPCs.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

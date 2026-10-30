@@ -1,3 +1,7 @@
+# INF601 - Advanced Programming in Python
+# Gage Giffin
+# Mini Project 6
+
 """
 Django settings for mysite project.
 
@@ -41,6 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'accounts',
+    'campaigns',
 ]
 
 MIDDLEWARE = [

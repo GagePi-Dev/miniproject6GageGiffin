@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Session Log | {{ campaign.name }}{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'campaign_list' %}">My Campaigns</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'campaign_detail' campaign.pk %}">{{ campaign.name }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Session Log</li>
+    </ol>
+</nav>
+
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+    <h1 class="h2 mb-0">Session Log</h1>
+    {% if is_dm %}
+        <a href="{% url 'session_create' campaign.pk %}" class="btn btn-primary">New Session</a>
+    {% endif %}
+</div>
+
+<div class="list-group shadow-sm">
+    {% for session in sessions %}
+        <a href="{% url 'session_detail' campaign.pk session.pk %}" class="list-group-item list-group-item-action py-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2 class="h5 mb-1">Session {{ session.number }}: {{ session.title }}</h2>
+                <small class="text-body-secondary">{{ session.date_played|date:"M j, Y" }}</small>
+            </div>
+            <p class="mb-0 text-body-secondary">{{ session.recap|truncatewords:30 }}</p>
+        </a>
+    {% empty %}
+        <div class="list-group-item text-body-secondary">No sessions logged yet.</div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}{% if session %}Edit Session {{ session.number }}{% else %}New Session{% endif %} | {{ campaign.name }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <p class="text-body-secondary mb-1">{{ campaign.name }}</p>
+                <h1 class="h3 mb-4">{% if session %}Edit Session {{ session.number }}{% else %}New Session{% endif %}</h1>
+                <form method="post">
+                    {% csrf_token %}
+                    {% include "partials/form_fields.html" %}
+                    <button type="submit" class="btn btn-primary">{% if session %}Save Changes{% else %}Add Session{% endif %}</button>
+                    <a href="{% if session %}{% url 'session_detail' campaign.pk session.pk %}{% else %}{% url 'session_list' campaign.pk %}{% endif %}"
+                       class="btn btn-outline-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}{% if npc %}Edit {{ npc.name }}{% else %}New NPC{% endif %} | {{ campaign.name }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <p class="text-body-secondary mb-1">{{ campaign.name }}</p>
+                <h1 class="h3 mb-4">{% if npc %}Edit {{ npc.name }}{% else %}New NPC{% endif %}</h1>
+                <form method="post">
+                    {% csrf_token %}
+                    {% include "partials/form_fields.html" %}
+                    <button type="submit" class="btn btn-primary">{% if npc %}Save Changes{% else %}Add NPC{% endif %}</button>
+                    <a href="{% url 'npc_list' campaign.pk %}" class="btn btn-outline-secondary">Cancel</a>
+                    {% if npc %}
+                        <button type="button" class="btn btn-outline-danger float-end" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                            Delete
+                        </button>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if npc %}
+    {% url 'npc_delete' campaign.pk npc.pk as delete_url %}
+    {% include "partials/delete_modal.html" with action=delete_url title="Delete NPC?" item=npc.name %}
+{% endif %}
+{% endblock %}

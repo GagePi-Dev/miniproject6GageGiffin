@@ -39,6 +39,35 @@
                 {% endif %}
             </div>
         </div>
+
+        <div class="card shadow-sm mt-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h2 class="h5 mb-0">Recent Sessions</h2>
+                    <a href="{% url 'session_list' campaign.pk %}" class="btn btn-sm btn-outline-secondary">Session Log ({{ session_count }})</a>
+                </div>
+                <div class="list-group list-group-flush">
+                    {% for session in recent_sessions %}
+                        <a href="{% url 'session_detail' campaign.pk session.pk %}" class="list-group-item list-group-item-action px-0">
+                            <strong>Session {{ session.number }}:</strong> {{ session.title }}
+                            <small class="text-body-secondary float-end">{{ session.date_played|date:"M j, Y" }}</small>
+                        </a>
+                    {% empty %}
+                        <p class="text-body-secondary mb-0">No sessions logged yet.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mt-4">
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <div>
+                    <h2 class="h5 mb-0">NPC Directory</h2>
+                    <p class="text-body-secondary mb-0">{{ npc_count }} NPC{{ npc_count|pluralize }}</p>
+                </div>
+                <a href="{% url 'npc_list' campaign.pk %}" class="btn btn-sm btn-outline-secondary">View NPCs</a>
+            </div>
+        </div>
     </div>
 
     <div class="col-lg-4">
@@ -71,25 +100,7 @@
 </div>
 
 {% if is_dm %}
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form method="post" action="{% url 'campaign_delete' campaign.pk %}">
-                {% csrf_token %}
-                <div class="modal-header">
-                    <h2 class="modal-title h5" id="deleteModalLabel">Delete Campaign?</h2>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    This permanently deletes <strong>{{ campaign.name }}</strong> along with all of its sessions and NPCs.
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+    {% url 'campaign_delete' campaign.pk as delete_url %}
+    {% include "partials/delete_modal.html" with action=delete_url title="Delete Campaign?" item=campaign.name warning="along with all of its sessions and NPCs" %}
 {% endif %}
 {% endblock %}

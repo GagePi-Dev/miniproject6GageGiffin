@@ -1,0 +1,2 @@
+<span class="badge {% if npc.status == 'alive' %}text-bg-success{% elif npc.status == 'dead' %}text-bg-secondary{% else %}text-bg-warning{% endif %}">{{ npc.get_status_display }}</span>
+{% if npc.is_hidden and is_dm %}<span class="badge text-bg-dark">Hidden</span>{% endif %}

@@ -1,3 +1,7 @@
+# INF601 - Advanced Programming in Python
+# Gage Giffin
+# Mini Project 6
+
 """
 ASGI config for mysite project.
 

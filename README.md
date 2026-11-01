@@ -197,6 +197,7 @@ This project was built with help from **Claude Code** (Anthropic's AI coding ass
 - **Sessions and NPCs (step 5):** wrote the session log, session detail, NPC directory and forms, plus the NPC detail modal and status filter.
 - **Security-focused testing:** wrote throwaway test scripts (rolled back, not part of the repo) checking that players can't see DM secrets or hidden NPCs, that non-members get 404s, that one DM can't reach another campaign's data by changing IDs in the URL, and that tampered form fields are ignored.
 - **Troubleshooting:** found that a mismatched `CSRF_TRUSTED_ORIGINS` value was blocking logins on the public site (checked without displaying the `.env` values), restarted the dev server when needed, and ran Django's deployment checks.
+- **Security and deployment pass:** set up WhiteNoise so the admin keeps its styling with `DEBUG=False`, turned `DEBUG` off in `.env` (changing only that line, without displaying the file), and removed the public fallback `SECRET_KEY` from `settings.py` so the app refuses to start without a key from `.env`.
 - **Documentation:** drafted this README.
 
 ### What I Did Myself

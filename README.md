@@ -196,4 +196,4 @@ This project was built with help from **Claude Code** (Anthropic's AI coding ass
 - Decided when each step was committed.
 
 ### What I Changed In AI Code
-- (to be filled in)
+- I made no manual edits to AI code. All edits were made through interacting with Claude Code.

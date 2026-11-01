@@ -77,6 +77,7 @@ miniproject6GageGiffin/
 - Python packages (in `requirements.txt`):
   - Django 6.1.2
   - python-dotenv 1.2.4
+  - WhiteNoise 6.12.0 (serves static files such as the admin CSS when `DEBUG` is off)
   - asgiref and sqlparse (Django dependencies)
 - SQLite (built into Python; no separate database server needed)
 - Internet access in the browser (Bootstrap is loaded from the jsDelivr CDN)
@@ -154,6 +155,17 @@ python manage.py runserver
 ```
 
 Open http://127.0.0.1:8000/ in a browser. The admin site is at http://127.0.0.1:8000/admin/.
+
+### Running with DEBUG turned off
+
+With `DJANGO_DEBUG=False`, Django no longer serves static files on its own. Collect them first so WhiteNoise can serve them (the admin will be unstyled otherwise):
+
+```bash
+python manage.py collectstatic --noinput
+python manage.py runserver
+```
+
+`collectstatic` copies the files into `staticfiles/`, which is ignored by Git. Run it again after upgrading Django.
 
 ## Using the App
 
